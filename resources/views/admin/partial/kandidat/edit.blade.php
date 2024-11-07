@@ -33,18 +33,18 @@
                         <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
                             <!-- Tombol Kurang -->
                             <button class="btn btn-danger btn-rounded w-100 w-sm-auto" type="button"
-                                id="decrementButton">
+                                id="decrementButtonEdit">
                                 <i class="bx bx-minus"></i>
                             </button>
 
                             <!-- Input Nomor -->
                             <input type="number" name="no_urut" class="form-control text-center w-100 w-sm-auto"
-                                id="noUrut" value="{{ $kandidat->no_urut }}" placeholder="Masukan No Urut" required
+                                id="noUrutEdit" value="{{ $kandidat->no_urut }}" placeholder="Masukan No Urut" required
                                 readonly>
 
                             <!-- Tombol Tambah -->
                             <button class="btn btn-primary btn-rounded w-100 w-sm-auto" type="button"
-                                id="incrementButton">
+                                id="incrementButtonEdit">
                                 <i class="bx bx-plus"></i>
                             </button>
                         </div>

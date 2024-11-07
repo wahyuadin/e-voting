@@ -27,15 +27,15 @@
                                 class="text-danger">*</span></label>
                         <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
                             <!-- Tombol Kurang -->
+                            <!-- Tombol Kurang -->
                             <button class="btn btn-danger btn-rounded w-100 w-sm-auto" type="button"
                                 id="decrementButton">
                                 <i class="bx bx-minus"></i>
                             </button>
 
                             <!-- Input Nomor -->
-                            <input type="number" name="no_urut" class="form-control text-center w-100 w-sm-auto"
-                                id="noUrut" value="{{ old('noUrut') ? old('noUrut') : 1 }}"
-                                placeholder="Masukan No Urut" required readonly>
+                            <input type="text" name="no_urut" class="form-control text-center w-100 w-sm-auto"
+                                id="noUrut" value="1" placeholder="Masukan No Urut" required readonly>
 
                             <!-- Tombol Tambah -->
                             <button class="btn btn-primary btn-rounded w-100 w-sm-auto" type="button"

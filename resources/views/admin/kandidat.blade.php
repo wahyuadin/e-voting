@@ -47,7 +47,7 @@
                                             <td>
                                                 <div class="d-flex justify-content-start flex-wrap gap-1">
                                                     <button class="btn btn-icon btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#{{ $kandidat->id }}">
+                                                        data-bs-target="#edit{{ $kandidat->id }}">
                                                         <i class='bx bxs-edit'></i>
                                                     </button>
                                                     <button class="btn btn-icon btn-danger" data-bs-toggle="modal"
@@ -58,6 +58,7 @@
                                             </td>
                                         </tr>
                                         @component('components.modal', [
+                                            'modal_id' => 'edit' . $kandidat->id,
                                             'id' => $kandidat->id,
                                             'url' => url('/admin/kandidat/' . $kandidat->id),
                                             'title' => 'Edit Data | Kandidat',
@@ -65,7 +66,7 @@
                                         ])
                                         @endcomponent
                                         @component('components.modal', [
-                                            'id' => 'hapus' . $kandidat->id,
+                                            'modal_id' => 'hapus' . $kandidat->id,
                                             'url' => url('/admin/kandidat/' . $kandidat->id),
                                             'title' => 'Hapus Data | Kandidat',
                                             'body' => 'admin.partial.kandidat.delete',
@@ -82,7 +83,7 @@
     </div>
     <!-- / Content -->
     @component('components.modal', [
-        'id' => 'tambahKandidat',
+        'modal_id' => 'tambahKandidat',
         'title' => 'Tambah Data | Kandidat',
         'body' => 'admin.partial.kandidat.add',
     ])
@@ -131,6 +132,22 @@
         decrementButton.addEventListener('click', () => {
             if (inputField.value > 1) { // Agar nilai tidak kurang dari 1
                 inputField.value = parseInt(inputField.value) - 1;
+            }
+        });
+
+        const incrementButtonEdit = document.getElementById('incrementButtonEdit');
+        const decrementButtonEdit = document.getElementById('decrementButtonEdit');
+        const inputFieldEdit = document.getElementById('noUrutEdit');
+
+        // Event untuk tombol tambah
+        incrementButtonEdit.addEventListener('click', () => {
+            inputFieldEdit.value = parseInt(inputFieldEdit.value) + 1;
+        });
+
+        // Event untuk tombol kurang
+        decrementButtonEdit.addEventListener('click', () => {
+            if (inputFieldEdit.value > 1) { // Agar nilai tidak kurang dari 1
+                inputFieldEdit.value = parseInt(inputFieldEdit.value) - 1;
             }
         });
 
