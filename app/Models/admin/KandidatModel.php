@@ -12,8 +12,12 @@ class KandidatModel extends Model
 
     protected $guarded = [];
 
+    public function pemilih() {
+        return $this->hasMany(DataPemilihModel::class, 'kandidat_id');
+    }
+
     public static function showData($id = null) {
-        return $id ? KandidatModel::where('id', $id) : KandidatModel::latest()->get();
+        return $id ? KandidatModel::where('id', $id) : KandidatModel::with('pemilih.user')->latest()->get();
     }
 
     public static function tambahData($data) {

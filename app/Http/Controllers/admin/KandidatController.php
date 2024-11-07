@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\admin\KandidatModel;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KandidatController extends Controller
 {
@@ -75,3 +76,4 @@ class KandidatController extends Controller
         }
     }
 }
+

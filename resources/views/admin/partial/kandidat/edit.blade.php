@@ -5,7 +5,6 @@
     <form method="POST" action="{{ $url }}" class="needs-validation" enctype="multipart/form-data" novalidate>
         @csrf
         @method('PUT')
-        <input type="text" name="id" id="id" value="{{ $kandidat->id }}" hidden>
         <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabel">{{ $title }}</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

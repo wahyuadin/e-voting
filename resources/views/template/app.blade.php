@@ -45,6 +45,9 @@
     <!-- Laravel vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    {{-- icon botstrap --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <!-- Helpers -->
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
     <script src="{{ asset('assets/js/config.js') }}"></script>

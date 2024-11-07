@@ -15,4 +15,12 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     protected $guarded = [];
+
+    public static function tambahData($data) {
+        return User::create($data);
+    }
+
+    public static function editData($id, $data) {
+        return User::find($id)->update($data);
+    }
 }

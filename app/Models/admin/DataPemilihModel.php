@@ -14,11 +14,11 @@ class DataPemilihModel extends Model
     protected $guarded = [];
 
     public function user() {
-        return $this->hasMany(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function kandidat() {
-        return $this->hasMany(KandidatModel::class, 'kandidat_id');
+        return $this->belongsTo(KandidatModel::class, 'kandidat_id');
     }
 
     public static function showData($id = null) {

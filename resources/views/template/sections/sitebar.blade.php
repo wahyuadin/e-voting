@@ -39,8 +39,8 @@
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Management User</span>
         </li>
         <!-- Cards -->
-        <li class="menu-item">
-            <a href="" class="menu-link {{ Request::is('admin/user*') ? 'active' : '' }}">
+        <li class="menu-item {{ Request::is('admin/user*') ? 'active' : '' }}">
+            <a href="{{ route('admin.user.store') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bxs-user-account"></i>
                 <div data-i18n="List Data User">List Data User</div>
             </a>

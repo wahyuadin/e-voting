@@ -39,10 +39,10 @@
                                             </td>
                                             <td>{{ $kandidat->no_urut }}</td>
                                             <td>
-                                                <p>{{ $kandidat->visi }}</p>
+                                                <p>{{ \Illuminate\Support\Str::words($kandidat->visi, 30, '...') }}</p>
                                             </td>
                                             <td>
-                                                <p>{{ $kandidat->misi }}</p>
+                                                <p>{{ \Illuminate\Support\Str::words($kandidat->misi, 30, '...') }}</p>
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-start flex-wrap gap-1">
@@ -95,107 +95,81 @@
             $('#userTable').DataTable();
         });
 
+        // Validasi Form dengan Bootstrap
         (function() {
             'use strict';
 
-            // Ambil semua form yang menggunakan kelas .needs-validation
             const forms = document.querySelectorAll('.needs-validation');
 
-            // Loop melalui semua form dan tambahkan event listener untuk mencegah pengiriman jika tidak valid
             Array.from(forms).forEach((form) => {
-                form.addEventListener(
-                    'submit',
-                    (event) => {
-                        if (!form.checkValidity()) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-
-                        // Tambahkan kelas was-validated untuk menampilkan pesan validasi Bootstrap
-                        form.classList.add('was-validated');
-                    },
-                    false
-                );
+                form.addEventListener('submit', (event) => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
             });
         })();
 
-        const incrementButton = document.getElementById('incrementButton');
-        const decrementButton = document.getElementById('decrementButton');
-        const inputField = document.getElementById('noUrut');
+        // Fungsi Increment dan Decrement Nomor Urut
+        const setupIncrementDecrement = (incrementId, decrementId, inputId) => {
+            const incrementButton = document.getElementById(incrementId);
+            const decrementButton = document.getElementById(decrementId);
+            const inputField = document.getElementById(inputId);
 
-        // Event untuk tombol tambah
-        incrementButton.addEventListener('click', () => {
-            inputField.value = parseInt(inputField.value) + 1;
-        });
+            if (incrementButton && decrementButton && inputField) {
+                incrementButton.addEventListener('click', () => {
+                    inputField.value = parseInt(inputField.value) + 1;
+                });
 
-        // Event untuk tombol kurang
-        decrementButton.addEventListener('click', () => {
-            if (inputField.value > 1) { // Agar nilai tidak kurang dari 1
-                inputField.value = parseInt(inputField.value) - 1;
+                decrementButton.addEventListener('click', () => {
+                    if (parseInt(inputField.value) > 1) {
+                        inputField.value = parseInt(inputField.value) - 1;
+                    }
+                });
             }
-        });
+        };
 
-        const incrementButtonEdit = document.getElementById('incrementButtonEdit');
-        const decrementButtonEdit = document.getElementById('decrementButtonEdit');
-        const inputFieldEdit = document.getElementById('noUrutEdit');
+        setupIncrementDecrement('incrementButton', 'decrementButton', 'noUrut');
+        setupIncrementDecrement('incrementButtonEdit', 'decrementButtonEdit', 'noUrutEdit');
 
-        // Event untuk tombol tambah
-        incrementButtonEdit.addEventListener('click', () => {
-            inputFieldEdit.value = parseInt(inputFieldEdit.value) + 1;
-        });
+        // Fungsi untuk menampilkan toast
+        function showToast(message, type = 'danger') {
+            const toastHTML = `
+            <div class="bs-toast toast fade show bg-${type}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <i class='bx bx-bell me-2'></i>
+                    <div class="me-auto fw-medium">Pemberitahuan</div>
+                    <small>Beberapa detik lalu</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">${message}</div>
+            </div>
+        `;
 
-        // Event untuk tombol kurang
-        decrementButtonEdit.addEventListener('click', () => {
-            if (inputFieldEdit.value > 1) { // Agar nilai tidak kurang dari 1
-                inputFieldEdit.value = parseInt(inputFieldEdit.value) - 1;
-            }
-        });
+            const toastContainer = document.createElement('div');
+            toastContainer.classList.add('position-fixed', 'top-0', 'end-0', 'p-3', 'mt-3');
+            toastContainer.style.zIndex = 9999;
+            toastContainer.innerHTML = toastHTML;
 
+            document.body.appendChild(toastContainer);
+
+            setTimeout(() => {
+                toastContainer.remove();
+            }, 5000);
+        }
+
+        // Form Submit dengan Fetch API
         document.getElementById('kandidatPost').addEventListener('submit', function(event) {
-            function showToast(message) {
-                // Buat elemen toast
-                const toastHTML = `
-                    <div class="bs-toast toast fade show bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="toast-header">
-                            <i class='bx bx-bell me-2'></i>
-                            <div class="me-auto fw-medium">Pemberitahuan</div>
-                            <small>Beberapa detik lalu</small>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                        <div class="toast-body">
-                            ${message}
-                        </div>
-                    </div>
-                `;
+            event.preventDefault();
 
-                // Tempatkan toast di dalam container (biasanya di bagian bawah halaman)
-                const toastContainer = document.createElement('div');
-                toastContainer.classList.add('position-fixed', 'top-0', 'end-0', 'p-3', 'mt-3');
-                toastContainer.style.zIndex = 9999; // Menambahkan z-index untuk memastikan berada di depan modal
-                toastContainer.style.transition = 'opacity 2s ease-in-out';
-                toastContainer.innerHTML = toastHTML;
-
-
-                // Tambahkan ke body
-                document.body.appendChild(toastContainer);
-
-                // Setelah beberapa detik, hapus toast
-                setTimeout(() => {
-                    toastContainer.remove();
-                }, 5000); // 5000 ms = 5 detik
-            }
-            event.preventDefault(); // Mencegah form untuk submit secara default
-
-            // Ambil data form
-            const formData = new FormData(this); // Ambil data dari form
-
-            // Ambil nilai dari file input dan tambahkan ke formData
+            const formData = new FormData(this);
             const fotoInput = document.querySelector('input[name="foto"]');
-            if (fotoInput.files.length > 0) {
+            if (fotoInput && fotoInput.files.length > 0) {
                 formData.append('foto', fotoInput.files[0]);
             }
 
-            // Gunakan Fetch API untuk mengirim data ke API
             fetch(`{{ url('admin/kandidat') }}`, {
                     method: 'POST',
                     body: formData,
@@ -203,32 +177,31 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
                 })
-                .then(response => response.json()) // Mengambil response dalam bentuk JSON
+                .then(response => response.json())
                 .then(data => {
-                    // Menangani respon dari API (berhasil)
                     if (data.status === 'success') {
                         Toastify({
                             text: 'Data Kandidat Berhasil Ditambah!',
                             duration: 3000,
-                            destination: "https://github.com/apvarun/toastify-js",
-                            newWindow: true,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            gravity: "top",
+                            position: "right",
+                            stopOnFocus: true,
                             style: {
-                                background: "#8BC34A",
-                                borderRadius: "1rem",
-                                textTransform: "uppercase",
-                                fontSize: ".75rem"
+                                background: "#28a745",
+                                borderRadius: "12px",
+                                color: "#FFFFFF",
+                                fontSize: ".85rem",
+                                padding: "1rem",
+                                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.5rem"
                             },
-                            onClick: function() {} // Callback after click
+                            avatar: "https://img.icons8.com/emoji/48/000000/check-mark-emoji.png"
                         }).showToast();
-                        setTimeout(function() {
-                            window.location.href = `{{ url('/admin/kandidat') }}`;
-                        }, 1000);
+                        setTimeout(() => window.location.href = `{{ url('/admin/kandidat') }}`, 1000);
                     } else {
-                        showToast('Harap lengkapi semua kolom, ' + data.message);
+                        showToast(`Harap lengkapi semua kolom, ${data.message}`);
                     }
                 })
                 .catch(error => {
@@ -238,58 +211,49 @@
         });
 
         @if (session('success'))
-            // Jika terdapat pesan sukses, tampilkan Toastify
             Toastify({
-                text: `{{ session('success') }}`, // Menambahkan ikon centang di depan teks
+                text: `{{ session('success') }}`,
                 duration: 3000,
-                newWindow: false,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
                 style: {
-                    background: "#28a745", // Warna hijau success dari Bootstrap
+                    background: "#28a745",
                     borderRadius: "12px",
                     color: "#FFFFFF",
                     fontSize: ".85rem",
                     padding: "1rem",
-                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Menambahkan bayangan agar lebih elegan
-                    display: "flex", // Agar ikon dan teks sejajar
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                    display: "flex",
                     alignItems: "center",
-                    gap: "0.5rem" // Jarak antara ikon dan teks
+                    gap: "0.5rem"
                 },
-                avatar: "https://img.icons8.com/emoji/48/000000/check-mark-emoji.png", // URL gambar ikon centang
-                avatarStyle: {
-                    borderRadius: "50%", // Membuat gambar berbentuk bulat
-                    border: "2px solid white", // Opsional: menambahkan border putih di sekitar gambar
-                },
-                onClick: function() {} // Callback setelah klik
+                avatar: "https://img.icons8.com/emoji/48/000000/check-mark-emoji.png"
             }).showToast();
         @endif
+
         @if (session('error'))
             Toastify({
-                text: `{{ session('error') }}`, // Menambahkan ikon centang di depan teks
+                text: `{{ session('error') }}`,
                 duration: 3000,
-                newWindow: false,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
                 style: {
-                    background: "#dc3530", // Warna merah danger dari Bootstrap
+                    background: "#dc3545",
                     borderRadius: "12px",
                     color: "#FFFFFF",
                     fontSize: ".85rem",
                     padding: "1rem",
-                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Menambahkan bayangan agar lebih elegan
-                    display: "flex", // Agar ikon dan teks sejajar
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                    display: "flex",
                     alignItems: "center",
-                    gap: "0.5rem" // Jarak antara ikon dan teks
+                    gap: "0.5rem"
                 },
-                avatar: "https://img.icons8.com/emoji/48/FFFFFF/exclamation-mark-emoji.png",
-                onClick: function() {} // Callback setelah klik
+                avatar: "https://img.icons8.com/emoji/48/FFFFFF/exclamation-mark-emoji.png"
             }).showToast();
         @endif
+
         @if ($errors->any())
             @foreach ($errors->all() as $error)
                 showToast('{{ $error }}');
