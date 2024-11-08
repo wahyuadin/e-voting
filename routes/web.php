@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\DataPemilihController;
 use App\Http\Controllers\admin\KandidatController;
 use App\Http\Controllers\admin\ManagementUser;
 use App\Http\Controllers\AuthentifikasiController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\siswa\RiwayatVotingController;
 use App\Http\Controllers\siswa\VotingController;
 use App\Http\Middleware\SesiFalse;
@@ -37,6 +38,7 @@ Route::middleware('role:admin')->group(function () {
     });
 });
 Route::middleware('auth')->group(function () {
+    Route::put('{id}', [Controller::class, 'editProfile'])->name('profile.edit');
     Route::prefix('siswa')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.siswa');
         Route::prefix('voting')->group(function () {
