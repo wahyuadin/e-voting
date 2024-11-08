@@ -7,18 +7,20 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function editProfile(Request $request) {
+    public function editProfile(Request $request, $id) {
         $request->validate([
-            'nama' => 'required|unique:users',
-            'nis' => 'required|unique:users',
-            'email' => 'required|unique:users',
+            'nama' => 'required',
+            'nis' => 'required',
+            'email' => 'required',
             'foto' => 'nullable|mimes:jpg,jpeg,png|max:10240',
-            'password' => 'required',
+            'password' => 'nullable',
+            'repassword' => 'nullable|same:password',
         ], [
             'required' => ':attribute wajib diisi',
             'unique' => ':attribute sudah terdaftar',
@@ -26,7 +28,7 @@ class Controller extends BaseController
             'max' => ':attribute maksimal 10MB',
         ]);
 
-        $data = $request->except(['_token']);
+        $data = $request->except(['_token', 'repassword']);
         $data['password'] = bcrypt($request->password);
         if ($request->hasFile('foto')) {
             $hasName        = $request->file('foto')->hashName();
@@ -35,10 +37,11 @@ class Controller extends BaseController
         }
 
         try {
-            User::tambahData($data);
+            User::editData($id, $data);
             return redirect()->back()->with('success', 'Data user berhasil ditambahkan.');
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', $th->getMessage());
+            Alert::error('Error', $th->getMessage());
+            return redirect()->back();
         }
     }
 }

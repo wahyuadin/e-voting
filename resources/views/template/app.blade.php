@@ -78,7 +78,7 @@
                         'modal_id' => 'profile',
                         'title' => 'Halaman Profile | ' . config('app.name'),
                         'id' => Auth::user(),
-                        'url' => url('/admin/profile'),
+                        'url' => route('profile.edit', ['id' => Auth::user()->id]),
                         'body' => 'partial.profile',
                     ])
                     @endcomponent
