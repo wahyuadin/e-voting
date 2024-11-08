@@ -39,6 +39,7 @@ Route::middleware('role:admin')->group(function () {
 });
 Route::middleware('auth')->group(function () {
     Route::put('{id}', [Controller::class, 'editProfile'])->name('profile.edit');
+    Route::get('/logout', [AuthentifikasiController::class, 'logout'])->name('logout');
     Route::prefix('siswa')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.siswa');
         Route::prefix('voting')->group(function () {
@@ -48,4 +49,3 @@ Route::middleware('auth')->group(function () {
         Route::get('riwayat-voting', [RiwayatVotingController::class, 'show'])->name('siswa.riwayat-voting.store');
     });
 });
-Route::get('/logout', [AuthentifikasiController::class, 'logout'])->name('logout');
