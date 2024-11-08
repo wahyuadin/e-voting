@@ -5,6 +5,8 @@ use App\Http\Controllers\admin\DataPemilihController;
 use App\Http\Controllers\admin\KandidatController;
 use App\Http\Controllers\admin\ManagementUser;
 use App\Http\Controllers\AuthentifikasiController;
+use App\Http\Controllers\siswa\RiwayatVotingController;
+use App\Http\Controllers\siswa\VotingController;
 use App\Http\Middleware\SesiFalse;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +34,16 @@ Route::middleware('role:admin')->group(function () {
             Route::put('{id}', [ManagementUser::class, 'edit'])->name('admin.user.edit');
             Route::delete('{id}', [ManagementUser::class, 'delete'])->name('admin.user.delete');
         });
+    });
+});
+Route::middleware('auth')->group(function () {
+    Route::prefix('siswa')->group(function () {
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.siswa');
+        Route::prefix('voting')->group(function () {
+            Route::get('/', [VotingController::class, 'show'])->name('siswa.voting.store');
+            Route::post('{id}', [VotingController::class, 'post'])->name('siswa.voting.edit');
+        });
+        Route::get('riwayat-voting', [RiwayatVotingController::class, 'show'])->name('siswa.riwayat-voting.store');
     });
 });
 Route::get('/logout', [AuthentifikasiController::class, 'logout'])->name('logout');

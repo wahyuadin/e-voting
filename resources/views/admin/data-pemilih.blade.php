@@ -57,11 +57,12 @@
                 </div>
             </div>
         </div>
-    @endsection
-    @push('scripts')
-        <script>
-            $(document).ready(function() {
-                $('#detailUser').DataTable();
-            });
-        </script>
-    @endpush
+    </div>
+@endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#detailUser').DataTable();
+        });
+    </script>
+@endpush

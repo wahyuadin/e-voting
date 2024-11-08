@@ -74,7 +74,14 @@
                     <!-- Content -->
                     @yield('content')
                     <!-- / Content -->
-
+                    @component('components.modal', [
+                        'modal_id' => 'profile',
+                        'title' => 'Profile | ' . config('app.name'),
+                        'id' => Auth::user(),
+                        'url' => url('/admin/profile'),
+                        'body' => 'partial.profile',
+                    ])
+                    @endcomponent
                     <!-- Footer -->
                     @include('template.sections.footer')
                     <!-- / Footer -->

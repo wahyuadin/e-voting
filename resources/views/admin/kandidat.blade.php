@@ -31,11 +31,18 @@
                                     @foreach ($data as $kandidat)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>
-                                                <img src="{{ asset('assets/data/kandidat/' . $kandidat->foto) }}"
-                                                    alt="{{ $kandidat->foto }}" width="50" height="50"
-                                                    class="rounded">
-                                                <span>{{ $kandidat->nama }}</span>
+                                            <td class="align-middle">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar flex-shrink-0 me-3">
+                                                        <span class="avatar-initial rounded bg-label-primary">
+                                                            <img src="{{ asset('assets/data/kandidat/' . $kandidat->foto) }}"
+                                                                alt="{{ $kandidat->foto }}">
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0">{{ $kandidat->nama }}</h6>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td>{{ $kandidat->no_urut }}</td>
                                             <td>

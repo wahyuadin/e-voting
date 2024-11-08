@@ -25,17 +25,19 @@
                     </div>
                 </div>
             </div>
-            <!-- chart js -->
-            <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
-                <div class="card">
-                    <div class="row row-bordered g-0">
-                        <div class="col-md-12">
-                            <h5 class="card-header m-0 me-2 pb-3">Presentase Perolehan Suara</h5>
-                            <canvas id="chartline" class="px-2"></canvas>
+            @if (Auth::user()->role == 'admin')
+                <!-- chart js -->
+                <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+                    <div class="card">
+                        <div class="row row-bordered g-0">
+                            <div class="col-md-12">
+                                <h5 class="card-header m-0 me-2 pb-3">Presentase Perolehan Suara</h5>
+                                <canvas id="chartline" class="px-2"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
         <div class="row">
             <!-- rekapitulasi -->
@@ -57,8 +59,14 @@
                             <!-- Teks di bagian kiri -->
                             <div class="d-flex flex-column align-items-left gap-1 mb-3 mb-md-0">
                                 <span>Kandidat Pemilihan Terbanyak</span>
-                                <h2 class="mb-2">8,258 Suara</h2>
-                                <p>Sdr/i Wahyuadin</p>
+                                @php
+                                    $maxPemilih = $data->sortByDesc(fn($item) => $item->pemilih->count())->first();
+                                    $jumlahMaxPemilih = $maxPemilih ? $maxPemilih->pemilih->count() : 0;
+                                @endphp
+                                <h2 class="mb-2">
+                                    {{ $jumlahMaxPemilih }} Suara
+                                </h2>
+                                <p>Sdr/i <b>{{ $data->max('pemilih')->first()->kandidat->nama ?? '-' }}</b></p>
                             </div>
                             <!-- Chart di bagian kanan -->
                             <div style="width: 100%; max-width: 300px; height: auto;">
@@ -78,43 +86,50 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <b>1</b>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar flex-shrink-0 me-3">
-                                                    <span class="avatar-initial rounded bg-label-primary">
-                                                        <img src="https://i.pinimg.com/736x/71/01/7d/71017d2c0810a0c624a5e25c1bd53124.jpg"
-                                                            alt="">
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <h6 class="mb-0"><b>Wahyuadin</b></h6>
-                                                    <small class="text-muted">No urut 1</small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        @if (Auth::user()->role == 'admin')
-                                            <td class="align-middle">
-                                                <div>
-                                                    <p class="mb-0">10 Suara</p>
-                                                </div>
+                                    @php
+                                        $no = 1;
+                                    @endphp
+                                    @foreach ($data as $dataItem)
+                                        <tr>
+                                            <td>
+                                                <b>{{ $no++ }}</b>
                                             </td>
-                                        @endif
-                                        <td class="align-middle">
-                                            <div class="user-progress">
-                                                <div class="progress" style="height: 20px;">
-                                                    <div class="progress-bar bg-success" role="progressbar"
-                                                        style="width: 35%;" aria-valuenow="35" aria-valuemin="0"
-                                                        aria-valuemax="100">
-                                                        <small class="fw-semibold text-white">35%</small>
+                                            <td class="align-middle">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar flex-shrink-0 me-3">
+                                                        <span class="avatar-initial rounded bg-label-primary">
+                                                            <img src="{{ asset('assets/data/kandidat/' . $dataItem->foto) }}"
+                                                                alt="">
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0"><b>{{ $dataItem->nama }}</b></h6>
+                                                        <small class="text-muted">No urut {{ $dataItem->no_urut }}</small>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            @if (Auth::user()->role == 'admin')
+                                                <td class="align-middle">
+                                                    <div>
+                                                        <p class="mb-0">{{ $dataItem->pemilih->count() }} Suara</p>
+                                                    </div>
+                                                </td>
+                                            @endif
+                                            <td class="align-middle">
+                                                <div class="user-progress">
+                                                    <div class="progress" style="height: 20px;">
+                                                        <div class="progress-bar bg-success" role="progressbar"
+                                                            style="width: {{ $dataItem->pemilih->count() > 0 ? ($dataItem->pemilih->count() / App\Models\User::count()) * 100 : 0 }}%;"
+                                                            aria-valuenow="{{ $dataItem->pemilih->count() > 0 ? ($dataItem->pemilih->count() / App\Models\User::count()) * 100 : 0 }}"
+                                                            aria-valuemin="0" aria-valuemax="100">
+                                                            <small
+                                                                class="fw-semibold text-white">{{ $dataItem->pemilih->count() > 0 ? round(($dataItem->pemilih->count() / App\Models\User::count()) * 100, 2) : 0 }}%</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -123,73 +138,83 @@
                 <!--/ Order Statistics -->
             </div>
         </div>
-    @endsection
-    @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            const ctx = document.getElementById('myChart');
-            const chartline = document.getElementById('chartline');
+    </div>
+@endsection
+@push('scripts')
+    @php
+        $total_suara = App\Models\User::count(); // Total suara
+        $persentase = $data->map(function ($item) use ($total_suara) {
+            return $total_suara > 0 ? round(($item->pemilih->count() / $total_suara) * 100, 2) : 0;
+        });
+    @endphp
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+        const chartline = document.getElementById('chartline');
 
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Wahyuadin', 'Yoga', 'Mikel'],
-                    datasets: [{
-                        data: [12, 19, 3]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return tooltipItem.label + ": " + tooltipItem.raw + " Kandidat";
-                                }
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: @json($data->pluck('nama')),
+                datasets: [{
+                    data: @json($persentase)
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ": " + tooltipItem.raw + " % Suara";
                             }
                         }
                     }
                 }
-            });
+            }
+        });
 
-            new Chart(chartline, {
-                type: 'bar',
-                data: {
-                    labels: ['Wahyuadin', 'Yoga', 'Mikel'],
-                    datasets: [{
-                        data: [12, 19, 3],
-                        label: 'Kandidat',
-                        borderColor: '#2196F3',
-                        backgroundColor: 'rgba(33, 150, 243, 0.2)',
-                        fill: true,
-                        borderWidth: 2,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return tooltipItem.label + ": " + tooltipItem.raw + " Kandidat";
-                                }
+        new Chart(chartline, {
+            type: 'bar',
+            data: {
+                labels: @json($data->pluck('nama')),
+                datasets: [{
+                    data: @json(
+                        $data->pluck('pemilih')->map(function ($item) {
+                            return $item->count();
+                        })),
+                    label: 'Presentase Kandidat',
+                    borderColor: '#2196F3',
+                    backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                    fill: true,
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ": " + tooltipItem.raw + " Suara";
                             }
                         }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    },
-                    // Menambahkan background ke area chart
-                    backgroundColor: 'rgba(240, 240, 240, 0.5)', // Background chart (berwarna abu-abu muda)
-                }
-            });
-        </script>
-    @endpush
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                // Menambahkan background ke area chart
+                backgroundColor: 'rgba(240, 240, 240, 0.5)', // Background chart (berwarna abu-abu muda)
+            }
+        });
+    </script>
+@endpush

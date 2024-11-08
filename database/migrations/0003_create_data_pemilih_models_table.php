@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('data_pemilih_models', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('kandidat_id')->references('id')->on('kandidat_models')->onDelete('cascade');
-            $table->foreignUuid('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignUuid('kandidat_id')->references('id')->on('kandidat_models')->onDelete('cascade')->unique();
+            $table->foreignUuid('user_id')->references('id')->on('users')->onDelete('cascade')->unique();
             $table->timestamps();
         });
     }

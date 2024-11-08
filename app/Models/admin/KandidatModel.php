@@ -17,7 +17,7 @@ class KandidatModel extends Model
     }
 
     public static function showData($id = null) {
-        return $id ? KandidatModel::where('id', $id) : KandidatModel::with('pemilih.user')->latest()->get();
+        return $id ? KandidatModel::where('id', $id) : KandidatModel::with('pemilih.user','pemilih.kandidat')->latest()->get();
     }
 
     public static function tambahData($data) {

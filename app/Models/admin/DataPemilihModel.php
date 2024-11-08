@@ -22,6 +22,10 @@ class DataPemilihModel extends Model
     }
 
     public static function showData($id = null) {
-        return $id ? DataPemilihModel::where('kandidat_id', $id)->with('user', 'kandidat')->get() : DataPemilihModel::with('user', 'kandidat')->latest()->get();
+        return $id ? DataPemilihModel::where('user_id', $id)->with('user', 'kandidat')->get() : DataPemilihModel::with('user', 'kandidat')->latest()->get();
+    }
+
+    public static function tambahData($data) {
+        return DataPemilihModel::create($data);
     }
 }

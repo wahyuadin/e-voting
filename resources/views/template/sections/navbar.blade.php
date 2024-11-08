@@ -37,7 +37,8 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a href="javascript:void(0)" class="dropdown-item" data-bs-toggle="modal"
+                            data-bs-target="#profile">
                             <i class="bx bx-user me-2"></i>
                             <span class="align-middle">My Profile</span>
                         </a>
@@ -53,7 +54,6 @@
                     </li>
                 </ul>
             </li>
-            <!--/ User -->
         </ul>
     </div>
 </nav>

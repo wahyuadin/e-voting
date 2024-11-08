@@ -3,77 +3,62 @@
 @section('content')
     <!-- Content -->
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">{{ ucwords(Auth::user()->role) }} /</span>
-            Management User
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">{{ ucwords(Auth::user()->role) }} /</span> Riwayat
+            Pemilihan
         </h4>
         <div class="row">
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <button type="button" class="btn btn-primary mb-3 mt-3" data-bs-toggle="modal"
-                                data-bs-target="#tambahUser"><i class='bx bx-plus'></i></button>
-                            <button type="button" class="btn btn-warning mb-3 mt-3" data-bs-toggle="modal"
-                                data-bs-target="#excel"><i class="bi bi-file-earmark-spreadsheet"></i></button>
-                            <table id="dataUser" class="table table-borderless">
+                            <table id="userTable" class="table table-borderless">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Siswa</th>
-                                        <th>Nomor Induk Siswa</th>
-                                        <th>Email</th>
-                                        <th>Actions</th>
+                                        <th>Nama Kandidat</th>
+                                        <th>No Urut</th>
+                                        <th>Visi</th>
+                                        <th>Misi</th>
+                                        <th>Diinput Pada</th>
+                                        <th>Riwayat Tanggal input</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
                                     @php
                                         $no = 1;
                                     @endphp
-                                    @foreach ($data as $dataItem)
+                                    @foreach ($data as $kandidat)
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td class="align-middle">
                                                 <div class="d-flex align-items-center">
                                                     <div class="avatar flex-shrink-0 me-3">
                                                         <span class="avatar-initial rounded bg-label-primary">
-                                                            <img src="{{ asset('assets/data/profile/' . $dataItem->foto) }}"
-                                                                alt="{{ $dataItem->foto }}">
+                                                            <img src="{{ asset('assets/data/kandidat/' . $kandidat->kandidat->foto) }}"
+                                                                alt="{{ $kandidat->kandidat->foto }}">
                                                         </span>
                                                     </div>
                                                     <div>
-                                                        <h6 class="mb-0">{{ $dataItem->nama }}</h6>
-                                                        <small class="text-muted">{{ $dataItem->role }}</small>
+                                                        <h6 class="mb-0">{{ $kandidat->kandidat->nama }}</h6>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ $dataItem->nis }}</td>
-                                            <td>{{ $dataItem->email }}</td>
+                                            <td>{{ $kandidat->kandidat->no_urut }}</td>
                                             <td>
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#edit{{ $dataItem->id }}">
-                                                    <i class='bx bx-edit'></i>
-                                                </button>
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#hapus{{ $dataItem->id }}">
-                                                    <i class='bx bx-trash'></i>
-                                                </button>
+                                                <p>{{ \Illuminate\Support\Str::words($kandidat->kandidat->visi, 30, '...') }}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p>{{ \Illuminate\Support\Str::words($kandidat->kandidat->misi, 30, '...') }}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                {{ $kandidat->created_at->diffForHumans() }}
+                                            </td>
+                                            <td>
+                                                {{ \Carbon\Carbon::parse($kandidat->created_at)->format('d M Y H:i') }}
                                             </td>
                                         </tr>
-                                        @component('components.modal', [
-                                            'modal_id' => 'edit' . $dataItem->id,
-                                            'id' => $dataItem,
-                                            'title' => 'Edit User | Management User',
-                                            'url' => route('admin.user.edit', ['id' => $dataItem->id]),
-                                            'body' => 'admin.partial.management-user.edit',
-                                        ])
-                                        @endcomponent
-                                        @component('components.modal', [
-                                            'modal_id' => 'hapus' . $dataItem->id,
-                                            'title' => 'Hapus User | Management User',
-                                            'url' => route('admin.user.delete', ['id' => $dataItem->id]),
-                                            'body' => 'admin.partial.management-user.delete',
-                                        ])
-                                        @endcomponent
                                     @endforeach
                                 </tbody>
                             </table>
@@ -84,27 +69,13 @@
         </div>
     </div>
     <!-- / Content -->
-    @component('components.modal', [
-        'modal_id' => 'tambahUser',
-        'title' => 'Tambah User | Management User',
-        'url' => route('admin.user.post'),
-        'body' => 'admin.partial.management-user.add',
-    ])
-    @endcomponent
-    @component('components.modal', [
-        'modal_id' => 'excel',
-        'title' => 'Tambah User By Excel | Management User',
-        'url' => route('admin.user.excel'),
-        'body' => 'admin.partial.management-user.excel',
-    ])
-    @endcomponent
 @endsection
+
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#dataUser').DataTable();
+            $('#userTable').DataTable();
         });
-
         @if (session('success'))
             Toastify({
                 text: `{{ session('success') }}`,
@@ -187,4 +158,4 @@
             @endforeach
         @endif
     </script>
-@endpush()
+@endpush

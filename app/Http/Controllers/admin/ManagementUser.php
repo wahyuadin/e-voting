@@ -20,6 +20,7 @@ class ManagementUser extends Controller
             'nis' => 'required|unique:users',
             'email' => 'required|unique:users',
             'foto' => 'nullable|mimes:jpg,jpeg,png|max:10240',
+            'password' => 'required',
         ], [
             'required' => ':attribute wajib diisi',
             'unique' => ':attribute sudah terdaftar',
@@ -28,6 +29,7 @@ class ManagementUser extends Controller
         ]);
 
         $data = $request->except(['_token']);
+        $data['password'] = bcrypt($request->password);
         if ($request->hasFile('foto')) {
             $hasName        = $request->file('foto')->hashName();
             $request->file('foto')->move(public_path('assets/data/profile'), $hasName);

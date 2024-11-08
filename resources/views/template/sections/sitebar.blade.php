@@ -18,10 +18,10 @@
             </a>
         </li>
 
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Management Data</span>
-        </li>
         @if (Auth::user()->role == 'admin')
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Management Data</span>
+            </li>
             <li class="menu-item {{ Request::is('admin/kandidat*') ? 'active' : '' }}">
                 <a href="{{ route('admin.kandidat.store') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bxs-user-detail"></i>
@@ -34,15 +34,31 @@
                     <div data-i18n="Result Voting Data">Result Voting Data</div>
                 </a>
             </li>
+            <!-- Components -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Management User</span>
+            </li>
+            <!-- Cards -->
+            <li class="menu-item {{ Request::is('admin/user*') ? 'active' : '' }}">
+                <a href="{{ route('admin.user.store') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bxs-user-account"></i>
+                    <div data-i18n="List Data User">List Data User</div>
+                </a>
+            </li>
         @endif
         <!-- Components -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Management User</span>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Pemilihan</span>
         </li>
         <!-- Cards -->
-        <li class="menu-item {{ Request::is('admin/user*') ? 'active' : '' }}">
-            <a href="{{ route('admin.user.store') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bxs-user-account"></i>
-                <div data-i18n="List Data User">List Data User</div>
+        <li class="menu-item {{ Request::is('siswa/voting*') ? 'active' : '' }}">
+            <a href="{{ route('siswa.voting.store') }}" class="menu-link">
+                <i class="menu-icon tf-icons bi bi-pin-angle"></i>
+                <div data-i18n="List Data User">Voting</div>
+            </a>
+        </li>
+        <li class="menu-item {{ Request::is('siswa/riwayat-voting*') ? 'active' : '' }}">
+            <a href="{{ route('siswa.riwayat-voting.store') }}" class="menu-link">
+                <i class="menu-icon tf-icons bi bi-clock-history"></i>
+                <div data-i18n="List Data User">Riwayat Pemilihan</div>
             </a>
         </li>
     </ul>
