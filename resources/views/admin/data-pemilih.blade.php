@@ -11,8 +11,8 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <!-- Grid Card -->
-                        <div class="row row-cols-1 row-cols-md-3 g-6 mb-12">
-                            @foreach ($data as $dataItem)
+                        @forelse ($data as $dataItem)
+                            <div class="row row-cols-1 row-cols-md-3 g-6 mb-12">
                                 <div class="col">
                                     <div class="card h-100">
                                         <img class="card-img-top" width="100"
@@ -51,12 +51,20 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
+                            @empty
+                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                    style="height: 20vh;">
+                                    <h3 class="text-center">Data Kandidat tidak ditemukan <i class="bi bi-emoji-tear"></i>
+                                    </h3>
+                                    <a href="{{ route('admin.kandidat.store') }}" class="btn btn-success">Tambah
+                                        Kandidat</a>
+                                </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection
 @push('scripts')
