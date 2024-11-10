@@ -66,11 +66,8 @@
                                 <h2 class="mb-2">
                                     {{ $jumlahMaxPemilih }} Suara
                                 </h2>
-                                @php
-                                    $maxPemilih = $data->max('pemilih');
-                                    $kandidat = $data->where('pemilih', $maxPemilih)->first()->kandidat ?? null;
-                                @endphp
-                                <p>Sdr/i <b>{{ $kandidat->nama ?? '-' }}</b></p>
+                                <p>Sdr/i <b>{{ optional($data->max('pemilih')->first())->user->nama ?? '-' }}</b>
+                                </p>
                             </div>
                             <!-- Chart di bagian kanan -->
                             <div style="width: 100%; max-width: 300px; height: auto;">
