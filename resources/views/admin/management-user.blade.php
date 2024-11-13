@@ -112,58 +112,6 @@
             });
         });
 
-        // function showEditModal(userId) {
-        //     $.ajax({
-        //         url: `{{ url('admin/user/partial/edit/`+userId+`') }}`,
-        //         method: 'GET',
-        //         success: function(data) {
-        //             const modalHtml = `
-    //                 <div class="modal fade" id="editModal${userId}" tabindex="-1" aria-labelledby="editModalLabel${userId}" aria-hidden="true">
-    //                     <div class="modal-dialog modal-xl">
-    //                         <div class="modal-content">
-    //                             <div class="modal-header">
-    //                                 <h5 class="modal-title" id="editModalLabel${userId}">Edit User</h5>
-    //                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    //                             </div>
-    //                             <div class="modal-body">
-    //                                 ${data} <!-- Konten dari form edit -->
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             `;
-        //             $('#modalContainer').html(modalHtml);
-        //             $('#editModal' + userId).modal('show');
-        //         }
-        //     });
-        // }
-
-        // function showDeleteModal(userId) {
-        //     $.ajax({
-        //         url: `{{ url('admin/user/partial/delete/`+userId+`') }}`,
-        //         method: 'GET',
-        //         success: function(data) {
-        //             const modalHtml = `
-    //                 <div class="modal fade" id="deleteModal${userId}" tabindex="-1" aria-labelledby="deleteModalLabel${userId}" aria-hidden="true">
-    //                     <div class="modal-dialog modal-xl">
-    //                         <div class="modal-content">
-    //                             <div class="modal-header">
-    //                                 <h5 class="modal-title" id="deleteModalLabel${userId}">Hapus User</h5>
-    //                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    //                             </div>
-    //                             <div class="modal-body">
-    //                                 ${data} <!-- Konten konfirmasi hapus -->
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             `;
-        //             $('#modalContainer').html(modalHtml);
-        //             $('#deleteModal' + userId).modal('show');
-        //         }
-        //     });
-        // }
-
         @if (session('success'))
             Toastify({
                 text: `{{ session('success') }}`,
