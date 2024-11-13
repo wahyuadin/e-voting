@@ -112,89 +112,32 @@
             });
         });
 
-        // Fungsi untuk memuat modal Edit
-        function showEditModal(userId) {
-            $.ajax({
-                url: `{{ url('admin/user/partial/edit/`+userId+`') }}`,
-                method: 'GET',
-                success: function(data) {
-                    const modalHtml = `
-                        <div class="modal fade" id="editModal${userId}" tabindex="-1" aria-labelledby="editModalLabel${userId}" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editModalLabel${userId}">Edit User</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <!-- Kolom untuk Nama Kandidat -->
-                                                    <div class="col-12 col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Nama Siswa<span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" placeholder="Masukan Nama Kandidat" name="nama"
-                                                                required value="{{ $id->nama }}" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Nomor Induk Siswa<span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" placeholder="Nomor Induk Siswa" name="nis"
-                                                                required value="{{ $id->nis }}" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
+        // function showEditModal(userId) {
+        //     $.ajax({
+        //         url: `{{ url('admin/user/partial/edit/`+userId+`') }}`,
+        //         method: 'GET',
+        //         success: function(data) {
+        //             const modalHtml = `
+    //                 <div class="modal fade" id="editModal${userId}" tabindex="-1" aria-labelledby="editModalLabel${userId}" aria-hidden="true">
+    //                     <div class="modal-dialog modal-xl">
+    //                         <div class="modal-content">
+    //                             <div class="modal-header">
+    //                                 <h5 class="modal-title" id="editModalLabel${userId}">Edit User</h5>
+    //                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    //                             </div>
+    //                             <div class="modal-body">
+    //                                 ${data} <!-- Konten dari form edit -->
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //             `;
+        //             $('#modalContainer').html(modalHtml);
+        //             $('#editModal' + userId).modal('show');
+        //         }
+        //     });
+        // }
 
-                                                <div class="mb-3">
-                                                    <label class="form-label">Role</label>
-                                                    <input type="text" class="form-control" required value="{{ $id->role }}" disabled>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Email <span class="text-danger">*</span></label>
-                                                    <input type="email" class="form-control" name="email" required value="{{ $id->email }}"
-                                                        placeholder="Masukan Email">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Password <span class="text-secondary">*</span></label>
-                                                    <input type="password" class="form-control" name="password" placeholder="Masukan Password">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Repassword <span class="text-secondary">*</span></label>
-                                                    <input type="password" class="form-control" name="repassword" placeholder="Masukan Repassword">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="foto" class="form-label">Foto Default <span class="text-secondary">*</span></label>
-                                                    <br>
-                                                    <img src="{{ asset('assets/data/profile/' . $id->foto) }}" alt="{{ $id->foto }}" class="img-fluid"
-                                                        style="max-width: 20%; height: auto;">
-                                                    <p class="text-danger mt-2">Format : jpg, jpeg, png, max ukuran 10 MB</p>
-                                                    <input type="file" class="form-control" name="foto" accept="image/*" size="10240">
-                                                    <span class="text-secondary">*jika tidak diupdate maka lewati saja</span>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    $('#modalContainer').html(modalHtml);
-                    $('#editModal' + userId).modal('show');
-                }
-            });
-        }
-
-        // Fungsi untuk memuat modal Hapus
         // function showDeleteModal(userId) {
         //     $.ajax({
         //         url: `{{ url('admin/user/partial/delete/`+userId+`') }}`,
@@ -220,7 +163,6 @@
         //         }
         //     });
         // }
-
 
         @if (session('success'))
             Toastify({
