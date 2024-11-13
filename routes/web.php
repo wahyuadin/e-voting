@@ -28,6 +28,11 @@ Route::middleware('role:admin')->group(function () {
         Route::get('data-pemilih', [DataPemilihController::class, 'show'])->name('admin.data-pemilih.store');
         Route::prefix('user')->group(function () {
             Route::get('/', [ManagementUser::class, 'show'])->name('admin.user.store');
+            Route::get('getData', [ManagementUser::class, 'getData'])->name('admin.user.data');
+            Route::prefix('partial')->group(function () {
+                Route::get('edit/{id}',[ManagementUser::class, 'partialEdit'])->name('partial-edit');
+                Route::get('delete/{id}',[ManagementUser::class, 'partialDelete'])->name('partial-delete');
+            });
             Route::prefix('upload')->group(function () {
                 Route::post('/', [ManagementUser::class, 'post'])->name('admin.user.post');
                 Route::post('excel', [ManagementUser::class, 'postExcel'])->name('admin.user.excel');

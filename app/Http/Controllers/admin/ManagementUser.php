@@ -14,6 +14,20 @@ class ManagementUser extends Controller
         return view('admin.management-user', ['data' => User::all()]);
     }
 
+    public function getData() {
+        $users = User::all();
+        return datatables()->of($users)->make(true);
+    }
+
+    public function partialEdit($id) {
+        return view('admin.partial.management-user.edit', ['user' => User::find($id)]);
+    }
+
+    public function partialDelete($id) {
+        return view('admin.partial.management-user.delete', ['user' => User::find($id)]);
+    }
+
+
     public function post(Request $request) {
         $request->validate([
             'nama' => 'required|unique:users',
@@ -67,6 +81,7 @@ class ManagementUser extends Controller
                 return back()->with('success', 'Data user berhasil ditambahkan.');
             } catch (\Exception $e) {
                 Alert::error('Error', $e->getMessage());
+                dump($e->getMessage());
                 return back()->with('error', 'Gagal memproses file: ' . $e->getMessage());
             }
         }

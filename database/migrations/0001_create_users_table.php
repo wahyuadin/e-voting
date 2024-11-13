@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('nama');
             $table->string('nis')->unique();
-            $table->string('email')->unique();
+            $table->string('email');
             $table->enum('role', ['admin', 'guru', 'siswa'])->default('siswa');
             $table->string('foto')->nullable()->default('default.jpg');
             $table->timestamp('email_verified_at')->nullable();

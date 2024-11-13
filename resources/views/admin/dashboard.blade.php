@@ -66,7 +66,11 @@
                                 <h2 class="mb-2">
                                     {{ $jumlahMaxPemilih }} Suara
                                 </h2>
-                                <p>Sdr/i <b>{{ optional($data->max('pemilih')->first())->user->nama ?? '-' }}</b>
+                                @if ($data->max('pemilih'))
+                                    <p>Sdr/i <b>{{ optional($data->max('pemilih')->first())->user->nama ?? '-' }}</b>
+                                    @else
+                                    <p><b>Tidak ada kandidat</b>
+                                @endif
                                 </p>
                             </div>
                             <!-- Chart di bagian kanan -->
